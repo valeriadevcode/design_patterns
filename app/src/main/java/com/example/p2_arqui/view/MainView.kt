@@ -1,60 +1,37 @@
 package com.example.p2_arqui.view
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material3.RadioButton
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MainScreen()
-        }
-    }
-}
-
 @Composable
-fun MainScreen() {
-    // Acomoda los elementos de la UI con un Column
+fun MainView() {
+    // Estado para el RadioGroup
+    var selectedOption by remember { mutableStateOf("Cliente") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Center
     ) {
-        // Título de la pantalla
+        // Título
         Text(
-            text = "Personal Trainer",
+            text = "Main",
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Grupo de botones radio
-        var selectedOption = "Cliente" // Estado para seleccionar entre Cliente y Entrenador
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-            ) {
+        // Grupo de RadioButtons
+        Column(modifier = Modifier.padding(bottom = 16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
                     selected = selectedOption == "Cliente",
                     onClick = { selectedOption = "Cliente" }
@@ -63,11 +40,7 @@ fun MainScreen() {
                 Text("Cliente")
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
                     selected = selectedOption == "Entrenador",
                     onClick = { selectedOption = "Entrenador" }
@@ -77,30 +50,32 @@ fun MainScreen() {
             }
         }
 
-        // Botón Iniciar Sesión
+        // Botón "Iniciar Sesión"
         Button(
-            onClick = { /* Acción de iniciar sesión */ },
+            onClick = {
+                // Acción al presionar "Iniciar Sesión"
+            },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(bottom = 8.dp)
         ) {
-            Text(text = "Iniciar Sesión")
+            Text("Iniciar Sesión")
         }
 
-        // Botón Registrar
+        // Botón "Registrar"
         Button(
-            onClick = { /* Acción de registrar */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
+            onClick = {
+                // Acción al presionar "Registrar"
+            },
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Registrar")
+            Text("Registrar")
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    MainScreen()
+fun PreviewMainView() {
+    MainView()
 }

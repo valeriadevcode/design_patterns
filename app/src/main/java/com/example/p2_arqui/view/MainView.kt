@@ -1,40 +1,106 @@
 package com.example.p2_arqui.view
 
-import android.widget.Toast
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material3.RadioButton
+import androidx.compose.ui.unit.sp
 
-@Composable
-fun MainView(navController: NavController) {
-    // Obtén el contexto actual
-    val context = LocalContext.current
-
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = "Bienvenido a la aplicación Personal Trainer")
-
-        // Botón de Cliente
-        Button(onClick = {
-            // Navega a ClienteView cuando se selecciona Cliente
-            navController.navigate("clienteView")
-            Toast.makeText(context, "Cliente seleccionado", Toast.LENGTH_SHORT).show()
-        }) {
-            Text(text = "Botón Cliente")
-        }
-
-        // Botón de Entrenador
-        Button(onClick = {
-            // Navega a EntrenadorView cuando se selecciona Entrenador
-            navController.navigate("entrenadorView")
-            Toast.makeText(context, "Entrenador seleccionado", Toast.LENGTH_SHORT).show()
-        }) {
-            Text(text = "Botón Entrenador")
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MainScreen()
         }
     }
+}
+
+@Composable
+fun MainScreen() {
+    // Acomoda los elementos de la UI con un Column
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        // Título de la pantalla
+        Text(
+            text = "Personal Trainer",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+        )
+
+        // Grupo de botones radio
+        var selectedOption = "Cliente" // Estado para seleccionar entre Cliente y Entrenador
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                RadioButton(
+                    selected = selectedOption == "Cliente",
+                    onClick = { selectedOption = "Cliente" }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Cliente")
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                RadioButton(
+                    selected = selectedOption == "Entrenador",
+                    onClick = { selectedOption = "Entrenador" }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Entrenador")
+            }
+        }
+
+        // Botón Iniciar Sesión
+        Button(
+            onClick = { /* Acción de iniciar sesión */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        ) {
+            Text(text = "Iniciar Sesión")
+        }
+
+        // Botón Registrar
+        Button(
+            onClick = { /* Acción de registrar */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ) {
+            Text(text = "Registrar")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    MainScreen()
 }

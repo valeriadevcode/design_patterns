@@ -1,24 +1,48 @@
 package com.example.p2_arqui.controller
 
-import com.example.p2_arqui.model.Persona
+import com.example.p2_arqui.model.Cliente
+import com.example.p2_arqui.model.Entrenador
+import android.content.Context
+import com.example.p2_arqui.model.JsonData
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import java.io.InputStreamReader
 
-class CrearController {
+class CrearController(private val context: Context) {
+
     fun ejecutar() {
-        // Llamada a los métodos de la clase Persona para crear Cliente y Entrenador
-        val persona = Persona(1, "Juan Pérez", "123456789", "juanp", "password123")
+        // Leer el archivo JSON desde la carpeta assets
+        val jsonString = cargarJsonDesdeAssets("usuarios.json")
 
-        // Mostrar información sobre la persona
-        persona.render()
-        persona.onClick()
+        // Deserializar el JSON
+        val json = Json { ignoreUnknownKeys = true }
+        val data = json.decodeFromString<JsonData>(jsonString)
 
-        // Crear Cliente
-        val cliente = persona.crearCliente(2, "Carlos García", "987654321", "carlosg", "password456", 1.80, 75.0)
-        cliente.render()  // Llamada al método render() de Cliente
-        cliente.onClick() // Llamada al método onClick() de Cliente
+        // Crear Clientes y Entrenadores a partir del JSON
+        val clientes = data.clientes.map {
+            Cliente(it.id, it.nombre, it.telefono, it.usuario, it.password, it.altura, it.peso)
+        }
 
-        // Crear Entrenador
-        val entrenador = persona.crearEntrenador(3, "Laura López", "567890123", "laural", "password789")
-        entrenador.render()  // Llamada al método render() de Entrenador
-        entrenador.onClick() // Llamada al método onClick() de Entrenador
+        val entrenadores = data.entrenadores.map {
+            Entrenador(it.id, it.nombre, it.telefono, it.usuario, it.password)
+        }
+
+        // Mostrar información sobre los Clientes y Entrenadores
+        clientes.forEach {
+            it.render()
+            it.onClick()
+        }
+
+        entrenadores.forEach {
+            it.render()
+            it.onClick()
+        }
+    }
+
+    // Función para cargar el archivo JSON desde assets
+    private fun cargarJsonDesdeAssets(nombreArchivo: String): String {
+        val inputStream = context.assets.open(nombreArchivo)
+        val reader = InputStreamReader(inputStream)
+        return reader.readText()
     }
 }

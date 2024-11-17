@@ -1,0 +1,22 @@
+{
+  "clientes": [
+    {
+      "id": 2,
+      "nombre": "Carlos García",
+      "telefono": "987654321",
+      "usuario": "carlosg",
+      "password": "password456",
+      "altura": 1.80,
+      "peso": 75.0
+    }
+  ],
+  "entrenadores": [
+    {
+      "id": 3,
+      "nombre": "Laura López",
+      "telefono": "567890123",
+      "usuario": "laural",
+      "password": "password789"
+    }
+  ]
+}

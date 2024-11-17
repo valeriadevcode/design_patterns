@@ -1,54 +1,62 @@
-package com.example.p2_arqui.ui
+package com.example.p2_arqui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.example.p2_arqui.ui.theme.PersonalTrainerTheme
+import com.example.p2_arqui.view.LoginClienteScreen
+import com.example.p2_arqui.view.LoginEntrenadorScreen
+import com.example.p2_arqui.view.RegistroCliente
+import com.example.p2_arqui.view.RegistroEntrenador
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // Configurar la navegación
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "main") {
-                // Definir las rutas y sus correspondientes composables
-                composable("main") {
-                    MainScreen(navController)
-                }
-                composable("loginCliente") {
-                    LoginClienteScreen()
-                }
-                composable("registroCliente") {
-                    RegistroClienteScreen()
-                }
-                composable("loginEntrenador") {
-                    LoginEntrenadorScreen()
-                }
-                composable("registroEntrenador") {
-                    RegistroEntrenadorScreen()
-                }
-            }
+            AppNavigation(navController) // Llamada a la navegación principal
         }
     }
 }
 
+
+@Composable
+fun AppNavigation(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = "main") {
+        composable("main") {
+            MainScreen(navController)
+        }
+        composable("loginCliente") {
+            LoginClienteScreen()
+        }
+        composable("loginEntrenador") {
+            LoginEntrenadorScreen()
+        }
+        composable("registroCliente") {
+            RegistroCliente()
+        }
+        composable("registroEntrenador") {
+            RegistroEntrenador()
+        }
+    }
+}
+
+
 @Composable
 fun MainScreen(navController: NavHostController) {
-    var selectedOption = "Cliente" // Estado para seleccionar entre Cliente y Entrenador
+    var selectedOption by remember { mutableStateOf("Cliente") }
 
-    // Acomoda los elementos de la UI con un Column
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,22 +64,20 @@ fun MainScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        // Título de la pantalla
         Text(
             text = "Personal Trainer",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Grupo de botones radio
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp)
+                    .padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
                     selected = selectedOption == "Cliente",
@@ -84,7 +90,8 @@ fun MainScreen(navController: NavHostController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp)
+                    .padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
                     selected = selectedOption == "Entrenador",
@@ -95,15 +102,12 @@ fun MainScreen(navController: NavHostController) {
             }
         }
 
-        // Botón Iniciar Sesión
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                // Lógica para la navegación según el RadioButton seleccionado
-                if (selectedOption == "Cliente") {
-                    navController.navigate("loginCliente")
-                } else {
-                    navController.navigate("loginEntrenador")
-                }
+                val route = if (selectedOption == "Cliente") "loginCliente" else "loginEntrenador"
+                navController.navigate(route)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -112,15 +116,12 @@ fun MainScreen(navController: NavHostController) {
             Text(text = "Iniciar Sesión")
         }
 
-        // Botón Registrar
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                // Lógica para la navegación según el RadioButton seleccionado
-                if (selectedOption == "Cliente") {
-                    navController.navigate("registroCliente")
-                } else {
-                    navController.navigate("registroEntrenador")
-                }
+                val route = if (selectedOption == "Cliente") "registroCliente" else "registroEntrenador"
+                navController.navigate(route)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,35 +132,3 @@ fun MainScreen(navController: NavHostController) {
     }
 }
 
-// Composables de las pantallas de Login y Registro para Cliente y Entrenador
-
-@Composable
-fun LoginClienteScreen() {
-    // Contenido para LoginCliente
-    Text("Pantalla de Login Cliente")
-}
-
-@Composable
-fun RegistroClienteScreen() {
-    // Contenido para RegistroCliente
-    Text("Pantalla de Registro Cliente")
-}
-
-@Composable
-fun LoginEntrenadorScreen() {
-    // Contenido para LoginEntrenador
-    Text("Pantalla de Login Entrenador")
-}
-
-@Composable
-fun RegistroEntrenadorScreen() {
-    // Contenido para RegistroEntrenador
-    Text("Pantalla de Registro Entrenador")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    val navController = rememberNavController()
-    MainScreen(navController)
-}

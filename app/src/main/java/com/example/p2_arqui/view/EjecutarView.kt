@@ -18,19 +18,16 @@ class EjecutarView : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PersonalTrainerTheme {
-                // Llamamos a la pantalla principal de la app
-                MainScreen()
+                EjecutarMainScreen() // Se renombró para evitar conflicto
             }
         }
     }
 }
 
 @Composable
-fun MainScreen() {
-    // Creamos el controlador de ejecución
+fun EjecutarMainScreen() { // Función renombrada
     val controller = EjecutarController()
 
-    // Layout principal
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,12 +35,9 @@ fun MainScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Título de la app
         Text(text = "Personal Trainer", style = MaterialTheme.typography.headlineLarge)
-
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botón para ejecutar Cardio
         Button(
             onClick = { controller.ejecutarCardio() },
             modifier = Modifier
@@ -55,7 +49,6 @@ fun MainScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón para ejecutar Fuerza
         Button(
             onClick = { controller.ejecutarFuerza() },
             modifier = Modifier
@@ -69,8 +62,8 @@ fun MainScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun EjecutarDefaultPreview() { // También renombrada para evitar conflicto con otro preview
     PersonalTrainerTheme {
-        MainScreen()
+        EjecutarMainScreen()
     }
 }
